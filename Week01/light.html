@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <title>红绿灯</title>
+      
+  </head>
+  <body>
+    <style>
+      .light {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background-color: gray;
+        display: inline-block;
+        margin-right: 20px;
+      }
+    </style>
+    <div class="light" id="light1"></div>
+    <div class="light" id="light2"></div>
+    <div class="light" id="light3"></div>
+  </body>
+  <script>
+    let lightArr =[document.getElementById("light1"),document.getElementById("light2"),document.getElementById("light3")] 
+    function sleep(duration){
+      return new Promise(function(resolve,reject){
+        setTimeout(resolve,duration)
+      })
+    }
+    async function changeColor(lightindex,duration,color){
+      lightArr.forEach((item,index)=>{
+        if(index === lightindex){
+          item.style.background = color
+        }else{
+          item.style.background = "gray"
+        }
+      })
+     
+      await sleep(duration)
+    }
+    async function main(){
+      while(true){
+        await changeColor(0,5000,"green")
+        await changeColor(1,2000,"yellow")
+        await changeColor(2,3000,"red")
+      }
+    }
+    main()
+  </script>
+</html>
