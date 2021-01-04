@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Trie2</title>
+</head>
+
+<body>
+  <script>
+    class TrieNode {
+      constructor(value) {
+        this.value = value; //value为单个字符
+        this.num = 1;
+        this.deep = 0;//根节点默认0
+        this.son = [];
+        this.isEnd = false;
+      }
+      findNode(value) {
+        for (let i = 0; i < this.son.length; i++) {
+          const node = this.son[i]
+          if (node.value == value) {
+            return node;
+          }
+        }
+        return null;
+      }
+    }
+    class Trie {
+      constructor() {
+        this.root = new TrieNode(null);
+        this.size = 1;//一开始的时候只有根节点这一个节点
+      }
+      insert(str) {
+        let node = this.root;
+        for (let c of str) {
+
+          let snode = node.findNode(c);
+          if (snode == null) {
+            snode = new TrieNode(c)
+            snode.deep = node.deep + 1;
+            node.son.push(snode);
+          } else {
+            snode.num++;//有N个字符串经过它
+          }
+          node = snode;
+
+        }
+        //如果当前的node已经是一个word，则不需要添加
+        if (!node.isEnd) {
+          this.size++;
+          node.isEnd = true;
+        }
+      }
+      has(str) {
+        let node = this.root;
+        for (let c of str) {
+          const snode = node.findNode(c)
+          if (snode) {
+            node = snode;
+          } else {
+            return false;
+          }
+        }
+        return node.isEnd;
+      }
+    }
+    function randomWord(length) {
+      var s = '';
+      for (let i = 0; i < length; i++) {
+        s += String.fromCharCode(Math.random() * 26 + 'a'.charCodeAt(0));
+      }
+      console.log(s)
+      return s;
+    }
+    let trie = new Trie()
+    trie.insert("abcdefg")
+    
+    // for (let i = 0; i < 5; i++) {
+    //   trie.insert(randomWord(6))
+    // }
+  </script>
+</body>
+
+</html>

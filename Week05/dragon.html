@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>元素拖拽</title>
+  </head>
+  <body>
+    <div id="container">
+      Note：现行的字符集国际标准，字符是以 Unicode 的方式表示的，每一个 Unicode 的码点表示一个字符，理论上，Unicode 的范围是无限的。UTF 是 Unicode 的编码方式，规定了码点在计算机中的表示方法，常见的有 UTF16 和 UTF8。 Unicode 的码点通常用 U+??? 来表示，其中 ??? 是十六进制的码点值。 0-65536（U+0000 - U+FFFF）的码点被称为基本字符区域（BMP）。
+    </div>
+    <div id="dragable" style="display: inline-block;width: 100px; height: 100px; background-color: hotpink;"></div>
+    
+  </body>
+  <script>
+    //mouse event range
+    let baseX = 0
+    let baseY = 0
+    let dom = document.getElementById("dragable")
+    dom.addEventListener("mousedown",(event)=>{
+      let startX = event.clientX 
+      let startY = event.clientY
+      let up = (event)=>{
+        baseX = baseX + event.clientX - startX
+        baseY = baseY + event.clientY - startY
+        document.removeEventListener("mousemove",move)
+        document.removeEventListener("mouseup",up)
+      }
+      let move = (event)=>{
+        // dom.style.transform = `translate(${baseX + event.clientX - startX}px,${baseY + event.clientY - startY}px)`
+        let range = getNearest(event.clientX,event.clientY)
+        range.insertNode(dom)
+      }
+      document.addEventListener("mousemove",move)
+      document.addEventListener("mouseup",up)
+    })
+
+    let ranges = []
+    let container = document.getElementById("container")
+    for(let i=0;i<container.childNodes[0].textContent.length;i++){
+      let range = document.createRange()
+      range.setStart(container.childNodes[0],i)
+      range.setEnd(container.childNodes[0],i)
+      console.log(range.getBoundingClientRect()) //cssom
+      ranges.push(range)
+    }
+
+    function getNearest(x,y){
+      let min = Infinity
+      let nearest = null
+      for(let range of ranges){
+        let rect = range.getBoundingClientRect()
+        let distance = (rect.x - x) ** 2 + (rect.y - y) ** 2
+        if(distance < min){
+          nearest = range
+          min = distance
+        }
+      }
+      return nearest
+    }
+    document.addEventListener("selectstart",(event)=>{event.preventDefault()})
+
+    
+  </script> 
+</html>
