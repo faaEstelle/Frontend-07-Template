@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>DragEvent拖拽</title>
+</head>
+<style>
+  .src {
+    display: flex;
+  }
+
+  .dropabled {
+    flex: 1;
+  }
+
+  .txt {
+    color: green;
+  }
+
+  .img {
+    width: 100px;
+    height: 100px;
+    border: 1px solid gray;
+  }
+
+  .target {
+    width: 200px;
+    height: 200px;
+    line-height: 200px;
+    text-align: center;
+    border: 1px solid gray;
+    color: red;
+  }
+</style>
+
+<body>
+  <div class="src">
+    <div class="dragabled">
+      <div class="txt" id="txt">
+        所有文字可拖拽
+        <p draggable="true">此段文字设置了dragable="true"</p>
+      </div>
+      <div class="url" id="url">
+        <a href="http://baidu.com" target="_blank">我是url</a>
+      </div>
+      <img class="img" id="img1"
+        src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fattachments.gfan.com%2Fforum%2Fattachments2%2F201301%2F29%2F125313339n39z82ydzc32y.jpg&refer=http%3A%2F%2Fattachments.gfan.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1612417107&t=f878d28f852c8d885ce9e75a3210ae9e"
+        alt="图片1" />
+    </div>
+    <div id="target" class="dropabled target">Drop Here</div>
+  </div>
+</body>
+<script>
+  let dragTxt = document.getElementById("txt")
+  let target = document.getElementById("target")
+
+  dragTxt.ondragstart = handleStart
+  dragTxt.ondrag = handleDrag
+  dragTxt.ondragend = handleEnd
+
+  function handleStart(e){
+    console.log(e,"dragstart-元素开始被拖动")
+  }
+  function handleDrag(e){
+    // console.log(e,"drag-元素被拖动时")
+  }
+  function handleEnd(e){
+    console.log(e,"dragend-拖动结束")
+  }
+
+  target.ondragenter = handleEnter
+  target.ondragover = handleOver
+  target.ondragleave = handleLeave
+  function handleEnter(e){
+    console.log(e,"dragenter-进入目的元素时")
+    e.preventDefault()
+  }
+  function handleOver(e){
+    // console.log(e,"dragover-在目的元素内时")
+    e.preventDefault()
+  }
+  function handleLeave(e){
+    console.log(e,"drageleave-离开目的元素时")
+    e.preventDefault()
+  }
+</script>
+
+</html>
